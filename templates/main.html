@@ -3,22 +3,64 @@
 <title>Assistudy</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no, maximum-scale=1.0, minimum-scale=1.0"/>
 <link rel="shortcut icon" type="image/x-icon" href="/static/icon/imac2.png">
-<link type="text/css" href="/static/bootstrap.css" rel="stylesheet">
-<link type="text/css" href="/static/my.css" rel="stylesheet">
-<script type="text/javascript" src="/static/myjq.js"></script>
+<link type="text/css" href="/static/stylesheets/bootstrap.css" rel="stylesheet">
+<link type="text/css" href="/static/stylesheets/my.css" rel="stylesheet">
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script language="javascript" type="text/javascript" src="/static/javascripts/myjq.js"></script>
 </head>
 
 <body>
+<div id="home"></div>
 <div class="top">
-	<img src="/static/image/main.jpg">	
+	<img src="/static/image/yuna.jpg">	
+	<div class="logo">
+		로고 & Brand name
+	</div>
+	<div class="login">
+		id: <input type="text" name="id"><br>
+		password: <input type="password" name="passwd">
+	</div>
 	<div class="my_menu">
 		<ul>
-			<a href="#"><li>HOME</li></a>
-			<a href="#"><li>ABOUT</li></a>
-			<a href="#"><li>MEMBER</li></a>
-			<a href="#"><li>SERVICE</li></a>
-			<a href="#"><li>CONTACT</li></a>
+			<a href="#home"><li>HOME</li></a>
+			<a href="#service"><li>SERVICE</li></a>
+			<a href="#about"><li>ABOUT</li></a>
+			<a href="#member"><li>MEMBER</li></a>
+			<a href="#contact"><li>CONTACT</li></a>
 		</ul>
 	</div>
+</div>
+<div id="service">
+	<h3>SERVICE</h3>
+</div>
+<div class="contents">
+	<img src="/static/image/service.jpg">
+	<div class="container">
+	</div>	
+</div>
+<div id="about">
+	<h3>ABOUT</h3>
+</div>
+<div class="contents">
+	<img src="/static/image/about.jpg">
+	<div class="container">
+	</div>	
+</div>
+<div id="member">
+	<h3>MEMBER</h3>
+</div>
+<div class="contents">
+	<img src="/static/image/member.jpg">
+	<div class="container">
+	</div>	
+</div>
+<div id="contact">
+	<h3>CONTACT</h3>
+</div>
+<div class="contents">
+	<img src="/static/image/contact.jpg">
+	<div class="container">
+	</div>	
+</div>
 </body>
 </html>
