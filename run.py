@@ -30,13 +30,13 @@ def init_db():
 def query_db(query, args=(), one=False):
 	"""퀴리 날리고 결과 리턴"""
 	cur = g.db.execute(query, args)
-	rv = [dict((cur.description[idx][0], value) for idx, value in enumerate(row)) for row in cur.fetchcall()]
+	rv = [dict((cur.description[idx][0], value) for idx, value in enumerate(row)) for row in cur.fetchall()]
 
 	return (rv[0] if rv else None) if one else rv
 
 def get_user_id(username):
 	"""유저이름을 인자로 받고 해당 id 리턴"""
-	rv = g.db.execute('select user_id from where username =?', [username]).fetchone()
+	rv = g.db.execute('select id from user where username =?', [username]).fetchone()
 
 	return rv[0] if rv else None
 
@@ -75,7 +75,7 @@ def register():
 		elif get_user_id(request.form['username']) is not None:
 			error = '사용할 수 없는 아이디 입니다.'
 		else:
-			g.db.execute('''insert into user (username, password) value (?,?,?)''', [request.form['username'],generate_password_hash(request.form['password'])])
+			g.db.execute('''insert into user (username, password) values (?,?)''', [request.form['username'],generate_password_hash(request.form['password'])])
 			g.db.commit()
 			flash('성공적으로 가입되었습니다.')
 			return redirect(url_for('main'))
@@ -88,33 +88,21 @@ def register():
 def main():
     return render_template('main.html')
 
-"""디비에 유저를 추가하는 함수"""
-@app.route('/add', methods=['POST'])
-def add_user():
-	if not session.get('logged_in'):
-		abort(401)
-	db = get_db()
-	db.execute('insert into user (username, password) values (?, ?)',[request.form['username'], request.form['password']])
-	db.commit()
-	flash('New user was successfully posted')
-	
-	return redict(url_for('show_user'))
-	
 """로그인 로그아웃"""
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	error = None
 	if request.method == 'POST':
-		if request.form['username'] != app.config['USERNAME']:
-			error = 'Invalid username'
-		elif request.form['password'] != app.config['PASSWORD']:
-			error = 'Invalid password'
+		user = query_db('''select * from user where username = ?''',[request.form['username']], one=True)
+		if user is None:
+			error = '그런 아이디는 존재하지 않습니다.'
+		elif not check_password_hash(user['password'], request.form['username']):
+			error = '비밀 번호가 잘못되었습니다.'
 		else:
-			session['logged_in'] = True
-			flash('You were logged in')
-
-			return redirect(url_for('show_user'))
-		return render_template('main.html', error=error)
+			flash('로그인 성공')
+			session['id'] = user['id']
+			return redirect(url_for('main'))
+	return render_template('main.html', error=error)
 
 @app.route('/logout')
 def logout():
