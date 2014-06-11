@@ -3,10 +3,11 @@
 <title>Assistudy</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no, maximum-scale=1.0, minimum-scale=1.0"/>
 <link rel="shortcut icon" type="image/x-icon" href="/static/icon/imac2.png">
-<link type="text/css" href="/static/stylesheets/bootstrap.css" rel="stylesheet">
+<link type="text/css" href="/static/stylesheets/bootstrap.min.css" rel="stylesheet">
 <link type="text/css" href="/static/stylesheets/my.css" rel="stylesheet">
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script language="javascript" type="text/javascript" src="/static/javascripts/myjq.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 </head>
 
 <body>
@@ -17,8 +18,15 @@
 		로고 & Brand name
 	</div>
 	<div class="login">
-		id: <input type="text" name="id"><br>
-		password: <input type="password" name="passwd">
+		{% if not session.logged_in %}
+		id: <input type="text" name="username"><br>
+		password: <input type="password" name="password"><br>
+		<input type="submit" value="로그인"><br>
+		<a href="{{url_for('register')}}"> 회원가입</a>
+		{% endif %}
+		{% if session.logged_in %}
+			login successed!
+		{% endif %}
 	</div>
 	<div class="my_menu">
 		<ul>
