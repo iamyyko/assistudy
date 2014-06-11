@@ -4,6 +4,7 @@ from flask import render_template, flash
 import os,sqlite3
 import time
 from werkzeug import check_password_hash, generate_password_hash
+from contextlib import closing
 
 app = Flask(__name__)
 app.config.from_object(__name__)
