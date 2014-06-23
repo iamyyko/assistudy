@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 app.config.update(dict(
-	DATABASE=os.path.join(app.root_path, 'flask.db'),
+	DATABASE=os.path.join(app.root_path, 'blog.db'),
 	DEBUG=True,
 	SECRET_KEY='development key',
 	USERNAME='admin',
@@ -87,7 +87,25 @@ def register():
 """메인 화면"""
 @app.route('/')
 def main():
-    return render_template('main.html')
+	blog = query_db('''select * from blog''')
+	l = len(blog)
+	return render_template('myblog.html', blog=blog, l=l)
+
+@app.route('/blog', methods=['GET', 'POST'])
+def blog():
+	if request.method == 'POST':
+		if not request.form['username']:
+			error = '아이디를 입력하세요.'
+		elif not request.form['password']:
+			error = '비밀번호를 입력하세요.'
+		elif not request.form['contents']:
+			error = '내용을 입력하세요.'
+		else:
+			g.db.execute('''insert into blog (title,username, password, contents) values (?,?,?,?)''', [request.form['title'],request.form['username'],request.form['password'],request.form['contents'] ])
+			g.db.commit()
+			flash('성공적으로 가입되었습니다.')
+			return redirect(url_for('main'))
+	return redirect(url_for('main'))
 
 """로그인 로그아웃"""
 @app.route('/login', methods=['GET', 'POST'])
